@@ -1,0 +1,24 @@
+{
+  "name": "noduos-core-platform-programacao-inicial",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fundação inicial do NoduOS: packages transversais mínimos e Core Platform estrutural, sem módulos comerciais.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test \"modules/core-platform/tests/**/*.test.js\"",
+    "check:boundaries": "node scripts/check-boundaries.js",
+    "verify": "npm run check:boundaries && npm test"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "modules/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

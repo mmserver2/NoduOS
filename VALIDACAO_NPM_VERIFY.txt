@@ -1,0 +1,63 @@
+
+> noduos-core-platform-programacao-inicial@0.1.0 verify
+> npm run check:boundaries && npm test
+
+
+> noduos-core-platform-programacao-inicial@0.1.0 check:boundaries
+> node scripts/check-boundaries.js
+
+Boundary check OK: Core Platform remains inside its approved frontier.
+
+> noduos-core-platform-programacao-inicial@0.1.0 test
+> npm run build && node --test "modules/core-platform/tests/**/*.test.js"
+
+
+> noduos-core-platform-programacao-inicial@0.1.0 build
+> tsc -p tsconfig.json
+
+TAP version 13
+# Subtest: tenant/context resolver fails closed when context is missing
+ok 1 - tenant/context resolver fails closed when context is missing
+  ---
+  duration_ms: 1.251744
+  type: 'test'
+  ...
+# Subtest: ResourceReference enforces no_domain_transfer
+ok 2 - ResourceReference enforces no_domain_transfer
+  ---
+  duration_ms: 0.240173
+  type: 'test'
+  ...
+# Subtest: Core authorization denies without PermissionGrant
+ok 3 - Core authorization denies without PermissionGrant
+  ---
+  duration_ms: 0.795799
+  type: 'test'
+  ...
+# Subtest: Core authorization allows with PermissionGrant, active license and enabled feature flag
+ok 4 - Core authorization allows with PermissionGrant, active license and enabled feature flag
+  ---
+  duration_ms: 0.239382
+  type: 'test'
+  ...
+# Subtest: idempotency fails closed on conflicting key reuse
+ok 5 - idempotency fails closed on conflicting key reuse
+  ---
+  duration_ms: 0.789975
+  type: 'test'
+  ...
+# Subtest: EventEnvelope rejects raw secret fields
+ok 6 - EventEnvelope rejects raw secret fields
+  ---
+  duration_ms: 0.295727
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 101.965375

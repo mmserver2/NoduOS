@@ -1,0 +1,19 @@
+ENTREGA: Programação inicial do Core Platform NoduOS
+
+Incluído:
+- Fundação do repositório modular.
+- Packages transversais mínimos.
+- Core Platform estrutural.
+- Testes iniciais.
+- Script de verificação de fronteira.
+
+Não incluído:
+- Módulos comerciais.
+- Endpoints comerciais.
+- Banco compartilhado.
+- Integrações com hardware.
+- Payload bruto sensível.
+
+Comando recomendado:
+
+npm run verify
