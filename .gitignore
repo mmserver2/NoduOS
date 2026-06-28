@@ -6,3 +6,15 @@ dist/
 coverage/
 .DS_Store
 *.log
+
+# NoduOS local/runtime
+node_modules/
+.env
+.env.local
+.npm/
+.pm2/
+.cache/
+*.log
+logs/
+coverage/
+.DS_Store
