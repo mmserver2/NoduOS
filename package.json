@@ -1,0 +1,28 @@
+{
+  "name": "noduos",
+  "version": "0.0.0-structural",
+  "private": true,
+  "description": "NoduOS - SaaS Modular de Gestão de Espaços e Segurança Unificada",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "modules/*"
+  ],
+  "scripts": {
+    "check:structure": "bash infra/scripts/verify-foundation.sh"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
+  "noduos": {
+    "stage": "foundation-only",
+    "execution": "not-authorized",
+    "deploy": false,
+    "services": false,
+    "database": false,
+    "functionalEndpoints": false,
+    "commercialModules": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@noduos/idempotency",
+  "version": "0.0.0-structural",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "noduos": {
+    "packageType": "transversal",
+    "stage": "foundation-only",
+    "commercialRule": false,
+    "finalAuthorizationDecision": false,
+    "databaseAccess": false,
+    "rawSecret": false,
+    "rawEvidence": false
+  }
+}

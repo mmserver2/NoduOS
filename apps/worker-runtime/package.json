@@ -1,0 +1,14 @@
+{
+  "name": "@noduos/app-worker-runtime-shell",
+  "version": "0.0.0-structural",
+  "private": true,
+  "type": "module",
+  "main": "src/main.ts",
+  "noduos": {
+    "appType": "worker-runtime-shell",
+    "startsWorker": false,
+    "consumesQueue": false,
+    "executesJob": false,
+    "deploy": false
+  }
+}

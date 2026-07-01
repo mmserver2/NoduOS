@@ -1,0 +1,14 @@
+{
+  "name": "@noduos/app-api-shell",
+  "version": "0.0.0-structural",
+  "private": true,
+  "type": "module",
+  "main": "src/main.ts",
+  "noduos": {
+    "appType": "api-shell",
+    "startsServer": false,
+    "opensPort": false,
+    "functionalEndpoints": false,
+    "deploy": false
+  }
+}

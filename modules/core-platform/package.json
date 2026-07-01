@@ -1,0 +1,17 @@
+{
+  "name": "@noduos/core-platform",
+  "version": "0.0.0-structural",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "noduos": {
+    "moduleType": "core",
+    "commercialModule": false,
+    "stage": "foundation-only",
+    "startsService": false,
+    "database": false,
+    "functionalEndpoints": false
+  }
+}
