@@ -14,7 +14,13 @@
     "verify:foundation": "bash infra/scripts/verify-foundation.sh",
     "check:invariants": "node scripts/check-foundation-invariants.mjs",
     "typecheck": "tsc --noEmit",
-    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck"
+    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core",
+    "check:core-contracts": "node scripts/check-core-contracts.mjs",
+    "check:core-security": "node scripts/check-core-security.mjs",
+    "check:core-privacy": "node scripts/check-core-privacy.mjs",
+    "check:core-invariants": "node scripts/check-core-invariants.mjs",
+    "check:core": "npm run check:core-contracts && npm run check:core-security && npm run check:core-privacy && npm run check:core-invariants",
+    "test:core": "node scripts/check-core-tests.mjs"
   },
   "engines": {
     "node": ">=22",

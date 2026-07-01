@@ -1,0 +1,91 @@
+# Manifesto corretivo - Core Platform Ciclo C.1
+
+Data UTC: 2026-07-01T16:01:09Z
+
+## Arquivos rastreados no escopo corretivo
+
+- modules/core-platform/src/application/application-boundary.ts
+- modules/core-platform/src/audit/audit-boundary.ts
+- modules/core-platform/src/authorization/authorization-decision.ts
+- modules/core-platform/src/contracts/core-contracts.ts
+- modules/core-platform/src/core-platform.ts
+- modules/core-platform/src/domain/entities.ts
+- modules/core-platform/src/events/core-events.ts
+- modules/core-platform/src/feature-flags/feature-flag-boundary.ts
+- modules/core-platform/src/index.ts
+- modules/core-platform/src/licensing/licensing-boundary.ts
+- modules/core-platform/src/privacy/privacy-boundary.ts
+- modules/core-platform/src/security/security-boundary.ts
+- modules/core-platform/src/tenant-context/tenant-context.ts
+- modules/core-platform/src/tests/structural-core-platform.expectation.ts
+- packages/audit-client/src/audit-reference.ts
+- packages/audit-client/src/index.ts
+- packages/authorization-client/src/authorization-decision-reference.ts
+- packages/authorization-client/src/index.ts
+- packages/contracts/src/index.ts
+- packages/contracts/src/public-contract.ts
+- packages/event-envelope/src/event-envelope-v1.ts
+- packages/event-envelope/src/index.ts
+- packages/evidence-reference/src/evidence-reference-v1.ts
+- packages/evidence-reference/src/index.ts
+- packages/idempotency/src/idempotency.ts
+- packages/idempotency/src/index.ts
+- packages/resource-reference/src/index.ts
+- packages/resource-reference/src/resource-reference-v1.ts
+- packages/secret-reference/src/index.ts
+- packages/secret-reference/src/secret-reference-v1.ts
+- packages/tenant-context/src/index.ts
+- packages/tenant-context/src/tenant-context.ts
+- packages/test-kit/src/index.ts
+- packages/test-kit/src/structural-expectation.ts
+- scripts/check-core-contracts.mjs
+- scripts/check-core-invariants.mjs
+- scripts/check-core-privacy.mjs
+- scripts/check-core-security.mjs
+- scripts/check-core-tests.mjs
+- scripts/check-foundation-invariants.mjs
+- tests/core-platform/core-platform.structural.test.ts
+
+## Hashes
+
+13f0e2fa3f43f3ec3eddf31de1cc8f0934cdceef29e69962396a2167d631cb1f  modules/core-platform/src/application/application-boundary.ts
+feeb1c009c0f85e70a41f51755129592925bf07fed5b4d41f1ffd6fc85cd7bb1  modules/core-platform/src/audit/audit-boundary.ts
+3f794e75bd275a4603dec07dafa8919ebbd7e12d0af624b1fbf0c7d7d33ba7e1  modules/core-platform/src/authorization/authorization-decision.ts
+e07957a7c3219ca33ac82a60832a5f44f04fc05d6226589e3a2a73b053dc64ea  modules/core-platform/src/contracts/core-contracts.ts
+0cb0fc8b2e05be8d30e608f395038ad99942a7e4dd7499b7c470d4b6697409b7  modules/core-platform/src/core-platform.ts
+683ce6986d893b969622f2cceeabb2f0c9798f35679ac78a0d9f173548180de8  modules/core-platform/src/domain/entities.ts
+2f3e08a51ef807b5dc5c54c36794e8a041b0794c08a552b3c873cb565b3a758a  modules/core-platform/src/events/core-events.ts
+3367f3520aa0f84bd4cd081130ef208cb90a61aebc85b972019d9bf525dcc387  modules/core-platform/src/feature-flags/feature-flag-boundary.ts
+3e8244fe0fb1b0093d198e134f3215424a3897b1e5f97b17da34291332e77f35  modules/core-platform/src/index.ts
+b1005f2d921a47cb3da93e06509caf2036256c1fb4c35cd4bddc86be7242b1f8  modules/core-platform/src/licensing/licensing-boundary.ts
+cce9e123c73cf4a50aa4ae8a92d105355398da1ee01cf87d6c0d748d30f9178f  modules/core-platform/src/privacy/privacy-boundary.ts
+51f80adc5ea225d3884f30f0561ea7abdfbb03a28c7a0a467074b80b22b119be  modules/core-platform/src/security/security-boundary.ts
+0020f1131c82ac0e5c9fd1fd407338930f92deadf4934859097b1be4d935e3d3  modules/core-platform/src/tenant-context/tenant-context.ts
+25e3d4ab4b8d9801cad95325d9611ecb9751f9e74bee47d733d7724037350ed9  modules/core-platform/src/tests/structural-core-platform.expectation.ts
+5fc2f1a955710b142ea6b7dc4012645e34b347f3ea9fbbfac870838f943b79c3  packages/audit-client/src/audit-reference.ts
+74b372763999d5008376c1bd871f5349fb0566eaab9344b744b29d73e9afe190  packages/audit-client/src/index.ts
+3a61dbef24655280205c690e1fe288511a8eaf28c12ed59560cf55e50bbb0e4d  packages/authorization-client/src/authorization-decision-reference.ts
+c73022d1be8c8ca5b8df41ecfb431bdc6a4f427499879c9183277f5d5a9d3053  packages/authorization-client/src/index.ts
+975a6f98f8e12d0b00f2c9a391f0641d42fe391fac8c6d939680a0c0ab037bb5  packages/contracts/src/index.ts
+f49a2fb332d8e97351a08ffaa3d437c9f711325f9cd915bc2821220012ae6687  packages/contracts/src/public-contract.ts
+576a9a8eab1fb791671d8cefc490687f4bb2e69577fe68286fd18679dbf60f4b  packages/event-envelope/src/event-envelope-v1.ts
+e24508e013392ac8b38fcd31302aab9afb422cc9b72c27a2827ec559272a05f5  packages/event-envelope/src/index.ts
+f227026ad04052b06e06bece546f5c6d24a459851af8ef71abc44fb9d3554883  packages/evidence-reference/src/evidence-reference-v1.ts
+91d00be2430188d6d94756bfd684cc0a36aa969a4a865959ca488320fa9e09e5  packages/evidence-reference/src/index.ts
+93280524e8ac2bbf35916a4a4ff91318b6e367b638121c316c10e2209be4aad2  packages/idempotency/src/idempotency.ts
+4d4bf4224d52d00114882baaaff39b15290e08428360fa153e3a200040d99438  packages/idempotency/src/index.ts
+8016c7a171fd84cda67637f96c677cc66fc4f1a40e59e5b14a540b6a026d9fd6  packages/resource-reference/src/index.ts
+711020a94667bfb64251b746cf33b1e9470384657ceda603e40c1cbab1cad87a  packages/resource-reference/src/resource-reference-v1.ts
+29e366f6ca4d05710b39b4af7beb909f5d02d21be5205046ab1671fe192c6c3a  packages/secret-reference/src/index.ts
+f54f5f671ca2f9631d1fcc7447ec11dc55dc3f5d1f05ad719f02eaeb81908f1a  packages/secret-reference/src/secret-reference-v1.ts
+11d6e684981d1db53935384e5c30108e78637c1994dfd3b56abfa0ff12f39918  packages/tenant-context/src/index.ts
+c8e78290cc336d4fd89de0018bae73613d3c67d100aae4cfccb2684f69a195ff  packages/tenant-context/src/tenant-context.ts
+6b851ab812db54d2e663489d0216d2a1ef861135e05f36933261c3710507927c  packages/test-kit/src/index.ts
+121f1cf9d5d6cc6b1b3534c1ad9b853237bc46dbfaa668fb991c6c4b8c5d3207  packages/test-kit/src/structural-expectation.ts
+12706b1294410e7c35f56c91d3274153c587d803b4922f136d3fe73bbfbc8016  scripts/check-core-contracts.mjs
+ea1c9a0ea62c565c7b8c264610e8f95efb99499f9f1a0738b0d84ad4744a95fc  scripts/check-core-invariants.mjs
+8d90a6ceb1c34c27198c5ae8b1428877938913bf9eb38ed5f236cd1cdb0f2519  scripts/check-core-privacy.mjs
+7e3c7d1b625d48027ecd908f9124ab3759a4b34a15bfd3100ec6f18c8b8c6081  scripts/check-core-security.mjs
+9c8d09faca9f4bbe9a2af5095d72cc57f339ade7f38ff2a09e5a44ad366b5ed9  scripts/check-core-tests.mjs
+b0793debd033928ee472328be704f73cab40a162be1f3443c7843b6eb8e0bc03  scripts/check-foundation-invariants.mjs
+43143a3bc7c84cbb6d39ee7bda6ed21ccf7e7d364e7126643e2cb1d684ec8983  tests/core-platform/core-platform.structural.test.ts

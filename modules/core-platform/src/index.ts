@@ -1,11 +1,2 @@
-export * from './domain/entities.js';
-export * from './authorization/authorization-decision.js';
-export * from './tenant-context/tenant-context.js';
-export * from './contracts/core-contracts.js';
-export * from './audit/audit-boundary.js';
-export * from './security/security-boundary.js';
-export * from './privacy/privacy-boundary.js';
-export * from './licensing/licensing-boundary.js';
-export * from './feature-flags/feature-flag-boundary.js';
-export * from './events/core-events.js';
-export * from './application/application-boundary.js';
+export * from './core-platform.js';
+

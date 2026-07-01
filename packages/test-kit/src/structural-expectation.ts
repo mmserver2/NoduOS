@@ -1,23 +1,14 @@
-export interface StructuralExpectation {
-  readonly name: string;
-  readonly expected: true;
-  readonly reason: string;
+export function structuralAssert(condition: boolean, message: string): void {
+  if (!condition) throw new Error('structural_assertion_failed:' + message);
 }
 
-export const structuralFoundationExpectations: readonly StructuralExpectation[] = [
-  {
-    name: 'no-commercial-module',
-    expected: true,
-    reason: 'A fundação estrutural cria somente Core Platform e packages transversais.'
-  },
-  {
-    name: 'no-functional-endpoint',
-    expected: true,
-    reason: 'Apps são cascas estruturais e não iniciam servidor.'
-  },
-  {
-    name: 'fail-closed',
-    expected: true,
-    reason: 'Ações críticas sem tenant, contexto, escopo ou autorização devem negar.'
-  }
-] as const;
+export function structuralAssertEqual<TValue>(actual: TValue, expected: TValue, message: string): void {
+  if (actual !== expected) throw new Error('structural_assertion_equal_failed:' + message);
+}
+
+export function structuralAssertThrows(action: () => unknown, message: string): void {
+  let thrown = false;
+  try { action(); } catch { thrown = true; }
+  if (!thrown) throw new Error('expected_throw:' + message);
+}
+

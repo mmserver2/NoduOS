@@ -11,8 +11,8 @@ export interface AuthorizationDecision {
   readonly decision: AuthorizationDecisionResult;
   readonly reasonCode: string;
   readonly policyReferences: readonly string[];
-  readonly licenseReference?: string;
-  readonly featureFlagReferences?: readonly string[];
+  readonly licenseReference?: string | undefined;
+  readonly featureFlagReferences?: readonly string[] | undefined;
   readonly expiresAt: string;
   readonly auditReference: string;
 }

@@ -37,7 +37,7 @@ export interface PermissionGrant {
   readonly permissionCode: string;
   readonly tenantId: string;
   readonly contextId: string;
-  readonly resourceReference?: string;
+  readonly resourceReference?: string | undefined;
 }
 
 export interface InheritanceGrant {
@@ -110,7 +110,7 @@ export interface EventContract {
 export interface ApiClient {
   readonly apiClientId: string;
   readonly ownerModule: string;
-  readonly secretReference?: string;
+  readonly secretReference?: string | undefined;
 }
 
 export interface WebhookEndpoint {
@@ -128,5 +128,5 @@ export interface BasicNotification {
 export interface GlobalConfig {
   readonly configId: string;
   readonly key: string;
-  readonly valueReference?: string;
+  readonly valueReference?: string | undefined;
 }
