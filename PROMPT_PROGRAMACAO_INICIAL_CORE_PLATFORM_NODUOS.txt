@@ -1,0 +1,78 @@
+
+# PROMPT - PROGRAMAÇÃO INICIAL DO CORE PLATFORM NODUOS
+
+Estamos trabalhando no projeto NoduOS - SaaS Modular de Gestão de Espaços e Segurança Unificada.
+
+Use obrigatoriamente os documentos centrais atualizados como fonte oficial:
+
+1. 00_BIBLIA_DO_PROJETO.md
+2. 01_MAPA_DE_MODULOS.md
+3. 02_REGRAS_DE_ARQUITETURA.md
+4. 03_DECISOES_OFICIAIS.md
+5. 04_PROMPTS_DE_TRABALHO.md
+6. 05_CATALOGO_DE_CONTRATOS_PUBLICOS.md
+7. 06_MATRIZ_TECNICA_PERMISSOES_POR_CONTRATO.md
+8. 07_MATRIZ_TECNICA_DADOS_SENSIVEIS_POR_CONTRATO.md
+9. 08_DETALHAMENTO_EVENTENVELOPE_V1.md
+10. 09_DETALHAMENTO_EVIDENCEREFERENCE_V1.md
+11. 10_DETALHAMENTO_SECRETREFERENCE_V1.md
+12. 11_DETALHAMENTO_AUTHORIZATIONDECISION_V1.md
+13. 12_DETALHAMENTO_RESOURCEREFERENCE_V1.md
+14. 13_BLUEPRINT_TECNICO_APLICACAO_NODUOS.md
+
+Estado oficial da raiz:
+
+- Última DEC consolidada: DEC-197.
+- Próxima DEC livre: DEC-198.
+- O Blueprint técnico da aplicação já está consolidado como trilho oficial de programação.
+
+Objetivo desta conversa:
+Iniciar a programação do Core Platform obedecendo o Blueprint técnico, sem violar modularidade, contratos, tenant/contexto, autorização, auditoria, LGPD, EventEnvelope, EvidenceReference, SecretReference, AuthorizationDecision ou ResourceReference.
+
+Regra central:
+Política influencia. Core decide. Módulo dono executa. Auditoria registra.
+
+Antes de escrever código, entregue apenas um RELATÓRIO DE PRONTIDÃO TÉCNICA E PLANO DE EXECUÇÃO DO CORE PLATFORM contendo:
+
+1. módulo dono;
+2. contratos afetados;
+3. estrutura de repositório a criar;
+4. ordem dos arquivos;
+5. entidades de domínio iniciais;
+6. limites de banco por domínio;
+7. APIs internas conceituais;
+8. eventos EventEnvelope v1 envolvidos;
+9. AuthorizationDecision exigida;
+10. ResourceReference exigida;
+11. dados sensíveis envolvidos;
+12. auditoria exigida;
+13. idempotência exigida;
+14. comportamento fail-closed;
+15. testes obrigatórios;
+16. riscos de acoplamento;
+17. confirmação do que será codado primeiro.
+
+Não escreva código na primeira resposta.
+Aguarde minha aprovação do plano técnico.
+Depois da aprovação, gere os arquivos de código em blocos completos, copiáveis e com comandos de criação quando necessário.
+
+Regras obrigatórias:
+
+- Não programar fora da fronteira do módulo dono.
+- Não criar endpoint sem contrato público.
+- Não criar tabela sem domínio do módulo.
+- Não criar ação sensível sem AuthorizationDecision v1.
+- Não apontar recurso intermodular sem ResourceReference v1.
+- Não publicar evento intermodular sem EventEnvelope v1.
+- Não trafegar segredo bruto; usar SecretReference v1.
+- Não trafegar evidência bruta quando EvidenceReference bastar.
+- Não usar read model como banco compartilhado.
+- Não usar evento como comando.
+- Não permitir frontend decidir autorização final.
+- Não criar MVP ou fase provisória.
+- Usar idempotency_key em comandos críticos.
+- Usar fail-closed em ações críticas.
+- Validar tenant, contexto, ator, recurso, permissão, licença, feature flag e política.
+- Gerar testes de contrato, autorização, tenant/contexto, idempotência e fail-closed.
+
+Comece pelo Core Platform, pois ele autentica, contextualiza, autoriza, licencia, audita, protege e conecta.
