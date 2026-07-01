@@ -10,19 +10,28 @@
     "modules/*"
   ],
   "scripts": {
-    "check:structure": "bash infra/scripts/verify-foundation.sh"
+    "check:structure": "bash infra/scripts/verify-foundation.sh",
+    "verify:foundation": "bash infra/scripts/verify-foundation.sh",
+    "check:invariants": "node scripts/check-foundation-invariants.mjs",
+    "typecheck": "tsc --noEmit",
+    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck"
   },
   "engines": {
     "node": ">=22",
     "npm": ">=10"
   },
   "noduos": {
-    "stage": "foundation-only",
-    "execution": "not-authorized",
+    "stage": "tooling-validation",
+    "execution": "local-only",
     "deploy": false,
     "services": false,
     "database": false,
     "functionalEndpoints": false,
-    "commercialModules": false
+    "commercialModules": false,
+    "remote": false,
+    "push": false
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
   }
 }
