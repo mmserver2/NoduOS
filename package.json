@@ -14,7 +14,7 @@
     "verify:foundation": "bash infra/scripts/verify-foundation.sh",
     "check:invariants": "node scripts/check-foundation-invariants.mjs",
     "typecheck": "tsc --noEmit",
-    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts",
+    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run check:core-api-boundary",
     "check:core-contracts": "node scripts/check-core-contracts.mjs",
     "check:core-security": "node scripts/check-core-security.mjs",
     "check:core-privacy": "node scripts/check-core-privacy.mjs",
@@ -22,7 +22,8 @@
     "check:core": "npm run check:core-contracts && npm run check:core-security && npm run check:core-privacy && npm run check:core-invariants",
     "test:core": "node scripts/check-core-tests.mjs",
     "check:engineering-protocol": "node scripts/check-engineering-protocol.mjs",
-    "check:internal-core-contracts": "node scripts/check-internal-core-contracts.mjs"
+    "check:internal-core-contracts": "node scripts/check-internal-core-contracts.mjs",
+    "check:core-api-boundary": "node scripts/check-core-api-boundary.mjs"
   },
   "engines": {
     "node": ">=22",
