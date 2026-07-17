@@ -3117,3 +3117,46 @@ Estado após esta consolidação:
 Próxima DEC livre: DEC-198.
 Próxima etapa recomendada: Programação inicial do Core Platform orientada pelo Blueprint técnico.
 ```
+
+
+---
+
+# Atualização consolidada: DEC-198 - Referência Git canônica pré-runtime
+
+O NoduOS passa a registrar formalmente a branch remota `official/pre-runtime-foundation-v1` como referência Git canônica para continuidade técnica pré-runtime.
+
+Essa decisão foi necessária porque o `origin/main` remoto possui histórico divergente e sem ancestral comum com a linha local oficial auditada.
+
+Regra central:
+
+```text
+A raiz governa. A branch oficial preserva a trilha. origin/main divergente não guia programação.
+```
+
+Estado oficial:
+
+```text
+Branch canônica pré-runtime: official/pre-runtime-foundation-v1
+Commit base publicado: 388c96e
+Commit completo: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+origin/main preservado: 73456a10720852456d074931d964361a3cdcb83a
+Tag marco: pre-runtime-foundation-v1
+```
+
+Enquanto `origin/main` não for reconciliado por decisão própria, prompts, payloads, auditorias, blocos de programação e continuidade técnica devem usar `official/pre-runtime-foundation-v1` como referência Git oficial.
+
+É proibido fazer pull, merge, rebase ou force push sobre `origin/main` para programação do NoduOS sem bloco próprio de reconciliação.
+
+Decisão aplicada:
+
+```text
+DEC-198: Política oficial de referência Git canônica pré-runtime.
+```
+
+Estado da raiz após aplicação:
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API.
+```

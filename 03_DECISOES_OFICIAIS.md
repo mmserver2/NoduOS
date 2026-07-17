@@ -5592,3 +5592,56 @@ As próximas decisões novas devem começar em DEC-198, salvo alteração formal
 
 Decisão aprovada na consolidação do Blueprint técnico da aplicação:
   • DEC-197
+
+
+---
+
+# DEC-198: Política oficial de referência Git canônica pré-runtime
+
+## Tema
+
+Referência Git oficial do NoduOS após divergência detectada entre o histórico remoto `origin/main` e a linha local auditada.
+
+## Decisão
+
+A branch remota `official/pre-runtime-foundation-v1` passa a ser a referência Git canônica do NoduOS para continuidade pré-runtime.
+
+O `origin/main` remoto não deve ser usado como referência oficial neste momento, pois possui histórico divergente, sem ancestral comum com o estado local auditado e consolidado.
+
+## Motivo
+
+O GIT-PUBLISH-BLOCK pré-runtime detectou que `origin/main` continha histórico remoto próprio. Para evitar sobrescrita destrutiva, perda de evidência ou merge não auditado, o estado oficial foi publicado em branch segura.
+
+## Impacto
+
+- Próximas etapas técnicas devem partir de `official/pre-runtime-foundation-v1`.
+- `origin/main` deve permanecer preservado até decisão específica de reconciliação.
+- Pull, merge, rebase ou force push sobre `origin/main` estão proibidos sem bloco próprio.
+- O Runtime-BLOCK técnico mínimo da API deve referenciar a branch oficial segura.
+- Esta decisão não cria endpoint, banco, migration, módulo comercial, worker ou deploy.
+
+## Estado técnico vinculado
+
+```text
+Commit oficial publicado: 388c96e
+Commit completo: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+Branch oficial publicada: official/pre-runtime-foundation-v1
+origin/main preservado: 73456a10720852456d074931d964361a3cdcb83a
+Tag marco: pre-runtime-foundation-v1
+```
+
+## Status
+
+Aprovada
+
+## Data
+
+2026-07-17
+
+## Estado da raiz
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API usando official/pre-runtime-foundation-v1 como branch Git oficial.
+```

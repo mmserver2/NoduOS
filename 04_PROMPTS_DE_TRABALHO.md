@@ -3897,7 +3897,7 @@ Entregue um CANVA FINAL em Markdown limpo, pronto para copiar e colar, com objet
 Estado atual após esta atualização:
 
 - DEC aplicada: DEC-192.
-- Próxima DEC livre: DEC-198.
+- Próxima DEC livre: DEC-199.
 - Próxima etapa recomendada: Detalhamento de SecretReference.
 
 
@@ -4007,7 +4007,7 @@ Decisão aplicada: DEC-194.
 
 Arquivo técnico raiz consolidado: `10_DETALHAMENTO_SECRETREFERENCE_V1.md`.
 
-Última DEC consolidada: DEC-197.
+Última DEC consolidada: DEC-198.
 
 Próxima DEC livre: DEC-195.
 
@@ -4380,4 +4380,37 @@ Regras obrigatórias:
 - Gerar testes de contrato, autorização, tenant/contexto, idempotência e fail-closed.
 
 Comece pelo Core Platform, pois ele autentica, contextualiza, autoriza, licencia, audita, protege e conecta.
+```
+
+
+---
+
+# Atualização de prompts de trabalho: DEC-198 - Referência Git canônica pré-runtime
+
+A partir da DEC-198, qualquer novo chat operacional, auditoria técnica, payload de programação ou bloco de execução do NoduOS deve considerar como referência Git oficial:
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+Não usar `origin/main` como base de programação enquanto ele permanecer divergente.
+
+Regras obrigatórias para próximos prompts técnicos:
+
+- declarar que `origin/main` possui histórico divergente preservado;
+- declarar que a branch oficial atual é `official/pre-runtime-foundation-v1`;
+- não executar pull de `origin/main`;
+- não executar merge com `origin/main`;
+- não executar rebase;
+- não executar force push;
+- não alterar `origin/main`;
+- não iniciar Runtime-BLOCK sem partir da branch oficial segura;
+- não tratar `origin/main` como trilho canônico sem DEC de reconciliação.
+
+Estado da raiz:
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API.
 ```

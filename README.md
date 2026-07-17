@@ -37,3 +37,27 @@ Política influencia. Core decide. Módulo dono executa. Auditoria registra.
 ## Frase guia
 
 Contrato antes de endpoint. Domínio antes de tabela. Autorização antes de ação. Referência antes de payload. Evento antes de read model. Auditoria antes de confiança. LGPD antes de dado bruto. Teste antes de deploy.
+
+
+---
+
+## Estado Git oficial pré-runtime
+
+A branch Git oficial para continuidade técnica do NoduOS neste momento é:
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+O `origin/main` remoto está preservado, mas não é referência canônica atual, pois possui histórico divergente anterior.
+
+Estado oficial publicado:
+
+```text
+Commit base pré-runtime: 388c96e
+Commit completo: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+Tag marco: pre-runtime-foundation-v1
+DEC aplicada: DEC-198
+```
+
+Não usar `origin/main` como base de programação sem decisão específica de reconciliação.

@@ -8,8 +8,8 @@ Tipo de documento: Blueprint técnico da aplicação
 Versão do documento: 1.0.1
 Data desta consolidação: 2026-06-27
 Status: Aprovado e consolidado nos documentos centrais
-Última DEC consolidada na raiz: DEC-197
-Próxima DEC livre: DEC-198
+Última DEC consolidada na raiz: DEC-198
+Próxima DEC livre: DEC-199
 Documento de referência da etapa: PROMPT_BLUEPRINT_TECNICO_APLICACAO_NODUOS.txt
 Arquivo técnico raiz oficial: `13_BLUEPRINT_TECNICO_APLICACAO_NODUOS.md`
 DEC consolidada nesta etapa: DEC-197
@@ -2302,3 +2302,32 @@ Próxima etapa recomendada: Programação inicial do Core Platform orientada pel
 ```
 
 A partir desta consolidação, qualquer código, endpoint, tabela, worker, evento, integração, tela ou deploy deve obedecer ao Blueprint técnico, sem substituir os documentos centrais da raiz.
+
+
+---
+
+# Atualização pós-publicação: DEC-198 - Referência Git canônica pré-runtime
+
+O Blueprint técnico da aplicação permanece como trilho oficial de programação do NoduOS.
+
+Para continuidade operacional em Git, a branch remota oficial passa a ser:
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+O `origin/main` remoto deve ser tratado como histórico divergente preservado, não como trilho de programação, até que uma DEC futura autorize reconciliação.
+
+Impacto no Runtime-BLOCK:
+
+- o Runtime-BLOCK técnico mínimo da API deve partir da branch `official/pre-runtime-foundation-v1`;
+- o Runtime-BLOCK não deve fazer pull, merge, rebase ou force push sobre `origin/main`;
+- qualquer tentativa de tornar `origin/main` canônico deve ocorrer em bloco próprio de reconciliação, com auditoria, manifesto, relatório e decisão.
+
+Estado após DEC-198:
+
+```text
+Última DEC consolidada na raiz: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API usando official/pre-runtime-foundation-v1.
+```
