@@ -8,9 +8,9 @@ Tipo de documento: Matriz técnica conceitual de permissões por contrato públi
 Versão do documento: 1.6.0
 Versão base dos contratos: v1
 Data desta consolidação: 2026-06-27
-Status: Aprovada e atualizada com Blueprint Técnico da Aplicação e DEC-197
-Última DEC consolidada na raiz: DEC-197
-Próxima DEC livre: DEC-198
+Status: Aprovada e atualizada com Blueprint Técnico da Aplicação, DEC-198 e referência Git canônica pré-runtime
+Última DEC consolidada na raiz: DEC-198
+Próxima DEC livre: DEC-199
 
 Frase guia:
 
@@ -1053,7 +1053,7 @@ Regras:
 
 Estado da raiz após esta atualização:
 
-- Última DEC consolidada: DEC-197.
+- Última DEC consolidada: DEC-198.
 - Próxima DEC livre: DEC-195.
 - Próxima etapa recomendada: Detalhamento de SecretReference.
 
@@ -1247,3 +1247,45 @@ A programação deve validar:
 - fail-closed.
 
 Nenhum teste de autorização deve considerar frontend, read model, evento ou referência como decisão final.
+
+
+---
+
+# Atualização transversal de raiz - DEC-198
+
+Data: 2026-07-17
+
+Este documento incorpora a decisão oficial DEC-198 como regra de governança Git pré-runtime.
+
+## Branch Git oficial
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+## Regra operacional
+
+Enquanto `origin/main` permanecer divergente, a branch oficial do NoduOS é `official/pre-runtime-foundation-v1`.
+
+`origin/main` é histórico remoto preservado, não trilho canônico de programação. Nenhum pull, merge, rebase ou force push sobre `origin/main` deve ser feito sem decisão e bloco próprios de reconciliação.
+
+## Estado técnico vinculado
+
+```text
+Commit base pré-runtime: 388c96e
+Commit completo base: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+Commit DEC-198: e87b8c0
+Commit completo DEC-198: e87b8c060e455bcaebd337ac6f781cf6af58d8d8
+Tag DEC-198: root-git-canonical-branch-dec-198-v1
+Tag marco pré-runtime: pre-runtime-foundation-v1
+Remote: git@github.com:mmserver2/NoduOS.git
+origin/main preservado: 73456a10720852456d074931d964361a3cdcb83a
+```
+
+## Estado da raiz
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API, usando official/pre-runtime-foundation-v1 como branch Git oficial.
+```

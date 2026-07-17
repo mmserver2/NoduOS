@@ -73,7 +73,7 @@ Estado consolidado:
 
 ```text
 Última DEC consolidada: DEC-196
-Próxima DEC livre: DEC-198
+Próxima DEC livre: DEC-199
 Próxima etapa recomendada: Blueprint técnico da aplicação
 ```
 
@@ -83,6 +83,22 @@ Decisões estruturais imediatamente anteriores:
 - DEC-196: ResourceReference v1 como padrão oficial de referência segura de recursos entre módulos.
 
 A raiz está apta para avançar ao Blueprint técnico da aplicação, mas a programação deve obedecer este documento para evitar acoplamento, bypass de autorização, banco compartilhado, evento-comando, segredo bruto, evidência bruta, biometria bruta ou payload completo de domínio.
+
+---
+
+## 2.1 Estado atual pós-DEC-198
+
+A seção anterior preserva o contexto histórico da etapa DEC-197. O estado operacional atual da raiz é:
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Branch Git oficial: official/pre-runtime-foundation-v1.
+origin/main: histórico remoto preservado, não canônico.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API.
+```
+
+O Runtime-BLOCK técnico mínimo da API deve partir da branch `official/pre-runtime-foundation-v1` e não deve fazer pull, merge, rebase ou force push sobre `origin/main`.
 
 ---
 
@@ -2296,7 +2312,7 @@ Estado após aplicação:
 
 ```text
 DEC-197 consolidada: Blueprint técnico da aplicação como trilho oficial de programação do NoduOS.
-Última DEC consolidada na raiz: DEC-197.
+Última DEC consolidada na raiz: DEC-198.
 Próxima DEC livre: DEC-198.
 Próxima etapa recomendada: Programação inicial do Core Platform orientada pelo Blueprint técnico.
 ```

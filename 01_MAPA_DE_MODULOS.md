@@ -1,7 +1,7 @@
 Mapa de Módulos: NoduOS
 SaaS Modular de Gestão de Espaços e Segurança Unificada
 Versão: 2.9
-Status: Base oficial atualizada com Blueprint Técnico da Aplicação, DEC-197 e documentos técnicos raiz 00 a 13
+Status: Base oficial atualizada com Blueprint Técnico da Aplicação, DEC-198, referência Git canônica pré-runtime e documentos técnicos raiz 00 a 13
 Data de criação: 2026-06-22
 Data desta atualização: 2026-06-27
 Tipo de documento: Mapa oficial dos módulos da plataforma
@@ -6491,8 +6491,8 @@ Status: Aprovado como documento técnico raiz complementar.
 Arquivo oficial: 06_MATRIZ_TECNICA_PERMISSOES_POR_CONTRATO.md
 Versão do documento: 1.0.1
 Versão base dos contratos: v1
-Última DEC consolidada: DEC-197
-Próxima DEC livre: DEC-198
+Última DEC consolidada: DEC-198
+Próxima DEC livre: DEC-199
 
 Objetivo
 Definir, por contrato público do NoduOS, quem pode chamar ou consumir, em qual perfil, escopo, tenant, contexto, recurso, permissão conceitual e sob quais exigências de AuthorizationDecision, Segurança e LGPD, auditoria, idempotência, sensibilidade, mascaramento, retenção e fail-closed.
@@ -6786,3 +6786,45 @@ Todos os módulos continuam independentes e donos dos próprios domínios. O Blu
 Nenhum módulo deve iniciar implementação sem declarar fronteira, contratos públicos, tenant/contexto, AuthorizationDecision quando aplicável, ResourceReference quando apontar recurso intermodular, EventEnvelope para eventos, auditoria, dados sensíveis, comportamento de falha e testes.
 
 A organização recomendada é arquitetura modular distribuível, podendo iniciar como modular monolith com fronteiras fortes, preparada para separar workers, filas, gateway-agent, serviços críticos e integrações sem reescrever domínio.
+
+
+---
+
+# Atualização transversal de raiz - DEC-198
+
+Data: 2026-07-17
+
+Este documento incorpora a decisão oficial DEC-198 como regra de governança Git pré-runtime.
+
+## Branch Git oficial
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+## Regra operacional
+
+Enquanto `origin/main` permanecer divergente, a branch oficial do NoduOS é `official/pre-runtime-foundation-v1`.
+
+`origin/main` é histórico remoto preservado, não trilho canônico de programação. Nenhum pull, merge, rebase ou force push sobre `origin/main` deve ser feito sem decisão e bloco próprios de reconciliação.
+
+## Estado técnico vinculado
+
+```text
+Commit base pré-runtime: 388c96e
+Commit completo base: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+Commit DEC-198: e87b8c0
+Commit completo DEC-198: e87b8c060e455bcaebd337ac6f781cf6af58d8d8
+Tag DEC-198: root-git-canonical-branch-dec-198-v1
+Tag marco pré-runtime: pre-runtime-foundation-v1
+Remote: git@github.com:mmserver2/NoduOS.git
+origin/main preservado: 73456a10720852456d074931d964361a3cdcb83a
+```
+
+## Estado da raiz
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API, usando official/pre-runtime-foundation-v1 como branch Git oficial.
+```

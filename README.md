@@ -61,3 +61,15 @@ DEC aplicada: DEC-198
 ```
 
 Não usar `origin/main` como base de programação sem decisão específica de reconciliação.
+
+
+---
+
+## Sincronização raiz DEC-198
+
+```text
+Commit DEC-198: e87b8c0
+Tag DEC-198: root-git-canonical-branch-dec-198-v1
+Branch oficial: official/pre-runtime-foundation-v1
+Próxima DEC livre: DEC-199
+```

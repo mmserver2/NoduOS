@@ -1,16 +1,16 @@
 # CANVA FINAL - DETALHAMENTO DE EVIDENCEREFERENCE NODUOS
 
-Projeto: NoduOS  
-Descrição oficial: SaaS Modular de Gestão de Espaços e Segurança Unificada  
-Conceito técnico: Sistema Operacional Modular para Espaços Físicos Conectados  
-Conceito de marca: Conexão que impulsiona  
-Tipo de documento: Padrão conceitual oficial para referência segura de evidências  
+Projeto: NoduOS
+Descrição oficial: SaaS Modular de Gestão de Espaços e Segurança Unificada
+Conceito técnico: Sistema Operacional Modular para Espaços Físicos Conectados
+Conceito de marca: Conexão que impulsiona
+Tipo de documento: Padrão conceitual oficial para referência segura de evidências
 Versão do documento: 1.0.5
-Versão base do contrato: v1  
-Data desta consolidação: 2026-06-27  
-Status: Aprovado e atualizado com Blueprint Técnico da Aplicação e DEC-197
-Última DEC consolidada na raiz: DEC-197  
-Próxima DEC livre: DEC-198  
+Versão base do contrato: v1
+Data desta consolidação: 2026-06-27
+Status: Aprovado e atualizado com Blueprint Técnico da Aplicação, DEC-198 e referência Git canônica pré-runtime
+Última DEC consolidada na raiz: DEC-198
+Próxima DEC livre: DEC-199
 DEC consolidada nesta etapa: DEC-193
 Próxima DEC livre após aplicação: DEC-195
 Arquivo técnico raiz oficial: `09_DETALHAMENTO_EVIDENCEREFERENCE_V1.md`
@@ -1470,7 +1470,7 @@ Decisão aplicada: DEC-194.
 
 Arquivo técnico raiz consolidado: `10_DETALHAMENTO_SECRETREFERENCE_V1.md`.
 
-Última DEC consolidada: DEC-197.
+Última DEC consolidada: DEC-198.
 
 Próxima DEC livre: DEC-195.
 
@@ -1582,3 +1582,45 @@ O Blueprint técnico da aplicação define como este padrão transversal deve se
 Nenhum código deve implementar este padrão como atalho para domínio alheio, banco compartilhado, autorização paralela, payload bruto, evento-comando, read model como fonte primária ou frontend como decisor de autorização.
 
 A aplicação deve ser contract-first, modular-first e authorization-first, sempre validando tenant/contexto, escopo, política, auditoria, idempotência quando aplicável e fail-closed em ações críticas.
+
+
+---
+
+# Atualização transversal de raiz - DEC-198
+
+Data: 2026-07-17
+
+Este documento incorpora a decisão oficial DEC-198 como regra de governança Git pré-runtime.
+
+## Branch Git oficial
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+## Regra operacional
+
+Enquanto `origin/main` permanecer divergente, a branch oficial do NoduOS é `official/pre-runtime-foundation-v1`.
+
+`origin/main` é histórico remoto preservado, não trilho canônico de programação. Nenhum pull, merge, rebase ou force push sobre `origin/main` deve ser feito sem decisão e bloco próprios de reconciliação.
+
+## Estado técnico vinculado
+
+```text
+Commit base pré-runtime: 388c96e
+Commit completo base: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+Commit DEC-198: e87b8c0
+Commit completo DEC-198: e87b8c060e455bcaebd337ac6f781cf6af58d8d8
+Tag DEC-198: root-git-canonical-branch-dec-198-v1
+Tag marco pré-runtime: pre-runtime-foundation-v1
+Remote: git@github.com:mmserver2/NoduOS.git
+origin/main preservado: 73456a10720852456d074931d964361a3cdcb83a
+```
+
+## Estado da raiz
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API, usando official/pre-runtime-foundation-v1 como branch Git oficial.
+```

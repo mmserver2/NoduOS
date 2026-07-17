@@ -7,8 +7,8 @@ SaaS Modular de Gestão de Espaços e Segurança Unificada
 ## Versão
 
 Versão: 2.8
-Status: Base oficial atualizada com Blueprint Técnico da Aplicação, DEC-197 e documentos técnicos raiz 00 a 13
-Data de criação: 2026-06-22  
+Status: Base oficial atualizada com Blueprint Técnico da Aplicação, DEC-198, referência Git canônica pré-runtime e documentos técnicos raiz 00 a 13
+Data de criação: 2026-06-22
 Data desta atualização: 2026-06-27
 Tipo de documento: Prompts oficiais para uso em conversas futuras
 
@@ -28,7 +28,7 @@ Antes de iniciar qualquer conversa nova, informe que existem documentos centrais
 
 Regra:
 
-**O chat conversa.  
+**O chat conversa.
 O documento manda.**
 
 ---
@@ -47,7 +47,7 @@ Todo prompt inicial de módulo deve conter, logo nas regras iniciais, as seguint
 - Toda produção de módulo deve respeitar a blindagem oficial: contratos versionados, idempotência, EventEnvelope, correlation_id, causation_id, validação de tenant/contexto, AuthorizationDecision do Core e fail-closed para ações críticas.
 - APIs internas, eventos, webhooks, comandos e read models precisam declarar owner_module, versão, permissões, escopo, dados sensíveis, compatibilidade e política de descontinuação.
 - Nenhum prompt pode sugerir acesso direto a banco interno, segredo bruto em payload, bypass de autorização, execução de domínio alheio ou comportamento fail-open em ação crítica.
-- A última decisão consolidada nesta raiz é DEC-197; a próxima decisão nova deve começar em DEC-198, salvo se o 03_DECISOES_OFICIAIS.md indicar outra última DEC.
+- A última decisão consolidada nesta raiz é DEC-198; a próxima decisão nova deve começar em DEC-199, salvo se o 03_DECISOES_OFICIAIS.md indicar outra última DEC.
 
 Regra curta:
 
@@ -4065,8 +4065,8 @@ Use obrigatoriamente os documentos centrais e técnicos do projeto como fonte of
 
 Estado atual da raiz:
 
-- Última DEC consolidada: DEC-197.
-- Próxima DEC livre: DEC-198.
+- Última DEC consolidada: DEC-198.
+- Próxima DEC livre: DEC-199.
 - Próxima etapa técnica recomendada: Detalhamento de AuthorizationDecision v1.
 
 Regra central:
@@ -4413,4 +4413,46 @@ Estado da raiz:
 Última DEC consolidada: DEC-198.
 Próxima DEC livre: DEC-199.
 Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API.
+```
+
+
+---
+
+# Atualização transversal de raiz - DEC-198
+
+Data: 2026-07-17
+
+Este documento incorpora a decisão oficial DEC-198 como regra de governança Git pré-runtime.
+
+## Branch Git oficial
+
+```text
+official/pre-runtime-foundation-v1
+```
+
+## Regra operacional
+
+Enquanto `origin/main` permanecer divergente, a branch oficial do NoduOS é `official/pre-runtime-foundation-v1`.
+
+`origin/main` é histórico remoto preservado, não trilho canônico de programação. Nenhum pull, merge, rebase ou force push sobre `origin/main` deve ser feito sem decisão e bloco próprios de reconciliação.
+
+## Estado técnico vinculado
+
+```text
+Commit base pré-runtime: 388c96e
+Commit completo base: 388c96e41ae2bffc5e9eee2e0a2af162cf5c3025
+Commit DEC-198: e87b8c0
+Commit completo DEC-198: e87b8c060e455bcaebd337ac6f781cf6af58d8d8
+Tag DEC-198: root-git-canonical-branch-dec-198-v1
+Tag marco pré-runtime: pre-runtime-foundation-v1
+Remote: git@github.com:mmserver2/NoduOS.git
+origin/main preservado: 73456a10720852456d074931d964361a3cdcb83a
+```
+
+## Estado da raiz
+
+```text
+Última DEC consolidada: DEC-198.
+Próxima DEC livre: DEC-199.
+Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API, usando official/pre-runtime-foundation-v1 como branch Git oficial.
 ```
