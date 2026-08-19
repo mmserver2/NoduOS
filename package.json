@@ -23,7 +23,8 @@
     "test:core": "node scripts/check-core-tests.mjs",
     "check:engineering-protocol": "node scripts/check-engineering-protocol.mjs",
     "check:internal-core-contracts": "node scripts/check-internal-core-contracts.mjs",
-    "check:core-api-boundary": "node scripts/check-core-api-boundary.mjs"
+    "check:core-api-boundary": "node scripts/check-core-api-boundary.mjs",
+    "test:core-api-boundary": "tsx --test tests/core-platform/core-api-boundary.structural.test.ts"
   },
   "engines": {
     "node": ">=22",
