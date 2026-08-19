@@ -38,7 +38,10 @@ export function validateCoreIdempotencyBoundary(
     return createCoreBoundarySuccess(request, { idempotency_state: "accepted" }, "accepted");
   }
 
-  const fingerprint = requireString(request.payload.command_fingerprint) ?? "structural-fingerprint";
+  const fingerprint = requireString(request.payload.command_fingerprint);
+  if (!fingerprint) {
+    return denyCoreBoundaryRequest(request, "CORE_IDEMPOTENCY_FINGERPRINT_REQUIRED", "command fingerprint is required when idempotency_key is present");
+  }
   const existingFingerprint = store.read(idempotencyKey);
 
   if (existingFingerprint === undefined) {

@@ -5646,6 +5646,49 @@ Próxima DEC livre: DEC-199.
 Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API usando official/pre-runtime-foundation-v1 como branch Git oficial.
 ```
 
+---
+
+# DEC-199: Bloco oficial de correção, testes reais e governança pré-runtime
+
+## Decisão
+
+Antes de qualquer Runtime-BLOCK, o NoduOS deve substituir verificações meramente textuais por testes executáveis, tornar os checkers portáveis, declarar e travar as ferramentas de teste no repositório e endurecer as fronteiras internas do Core em modo fail-closed.
+
+O `check:all` deve executar testes reais do Core Platform, dos contratos internos e da Core API Boundary. A instalação reproduzível deve usar `npm ci`; `tsx` deve ser dependência de desenvolvimento com versão exata e registrada no lockfile.
+
+AuthorizationBoundary somente pode permitir uma solicitação quando decisão, política e permissão forem explicitamente `allow`. EventEnvelope não pode transportar comando disfarçado de fato. Idempotência com chave exige fingerprint. Erros e detalhes devem ser minimizados e sanitizados.
+
+## Restrições
+
+- não iniciar endpoint, servidor HTTP, banco, migration, worker ou deploy;
+- não criar módulos comerciais;
+- não alterar Nginx, UFW, Fail2ban, systemd, `/opt/noduos/current` ou `/opt/noduos/releases`;
+- não executar pull, merge, rebase, reset ou force push;
+- publicar somente em `official/pre-runtime-foundation-v1`;
+- preservar `origin/main` em `73456a10720852456d074931d964361a3cdcb83a`;
+- interromper a execução se qualquer gate falhar.
+
+## Resultado esperado
+
+Fundação estrutural reproduzível, testes reais integrados ao gate completo, contratos e fronteiras coerentes e evidências auditáveis antes da autorização do Runtime-BLOCK.
+
+## Status
+
+Aprovada para execução controlada.
+
+## Data
+
+2026-08-19
+
+## Estado decisório
+
+```text
+Última DEC consolidada: DEC-199.
+Próxima DEC livre: DEC-200.
+Próxima etapa autorizada: executar e auditar integralmente o bloco DEC-199.
+Runtime-BLOCK: não iniciado e não autorizado por esta decisão.
+```
+
 
 ---
 

@@ -41,6 +41,9 @@ const validAuthorization: CoreAuthorizationPayload = {
   purpose: "structural_test",
   sensitivity_level: "internal",
   audit_reference: "audit:ref_1",
+  authorization_decision: "allow",
+  policy_result: "allow",
+  permission_result: "allow",
 };
 
 const authorizationAllowed = facade.validateAuthorization(buildRequest(validAuthorization));
@@ -95,7 +98,7 @@ assert(resourceReference.status === "resolved" && resourceReference.result.no_do
 const eventPayload: CoreEventEnvelopePayload = {
   event_id: "event_1",
   event_name: "CoreFactRegistered",
-  event_type: "fact",
+  event_type: "fact_occurred",
   payload_minimized: true,
   payload: { ok: true },
 };
@@ -109,6 +112,14 @@ const commandEventPayload: CoreEventEnvelopePayload = {
   payload_minimized: true,
 };
 assert(facade.validateEventEnvelope(buildRequest(commandEventPayload)).fail_closed === true, "EventEnvelopeBoundary rejeita evento-comando");
+
+const disguisedCommand: CoreEventEnvelopePayload = {
+  event_id: "event_3",
+  event_name: "ExecuteCommand",
+  event_type: "fact_occurred",
+  payload_minimized: true,
+};
+assert(facade.validateEventEnvelope(buildRequest(disguisedCommand)).fail_closed === true, "EventEnvelopeBoundary rejeita comando disfarçado de fato");
 
 const secretPayload: CoreSecretReferencePayload = { secret_reference: "secret:ref_1", raw_secret_allowed: "never" };
 assert(facade.validateSecretReference(buildRequest(secretPayload)).status === "resolved", "SecretReferenceBoundary aceita referencia segura");
@@ -131,6 +142,7 @@ const idem3: CoreIdempotencyPayload = { idempotency_key: "idem_1", command_finge
 assert(facade.validateIdempotency(buildRequest(idem1)).status === "accepted", "IdempotencyBoundary aceita primeira execucao");
 assert(facade.validateIdempotency(buildRequest(idem2)).status === "replayed", "IdempotencyBoundary detecta replay");
 assert(facade.validateIdempotency(buildRequest(idem3)).status === "conflict", "IdempotencyBoundary detecta conflito");
+assert(facade.validateIdempotency(buildRequest({ idempotency_key: "idem_missing_fp", idempotency_required: true })).fail_closed === true, "IdempotencyBoundary exige fingerprint");
 
 const validContract: CoreContractBoundaryPayload = {
   contract_id: "NODUOS.CORE.AUTHORIZATION_DECISION.v1",

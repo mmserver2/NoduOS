@@ -53,3 +53,11 @@ export const internalCoreContractsStructuralTests: readonly StructuralTestResult
 
 export const allInternalCoreContractStructuralTestsPass = internalCoreContractsStructuralTests.every((item) => item.passed);
 
+if (!allInternalCoreContractStructuralTestsPass) {
+  for (const item of internalCoreContractsStructuralTests.filter((candidate) => !candidate.passed)) {
+    console.error(`FAIL: ${item.name}`);
+  }
+  throw new Error("internal core contract structural tests failed");
+}
+
+console.log("OK: internal core contract structural tests passed");

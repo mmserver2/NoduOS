@@ -98,6 +98,18 @@ origin/main: histórico remoto preservado, não canônico.
 Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API.
 ```
 
+---
+
+## Trilha executiva pós-DEC-199
+
+1. Concluir o bloco de correção pré-runtime com instalação reproduzível e testes reais.
+2. Demonstrar fail-closed por casos positivos e negativos em autorização, contratos, eventos, evidências, segredos e idempotência.
+3. Produzir log, relatório final, manifesto, hashes, commit e tag imutável da execução.
+4. Submeter a evidência à auditoria final.
+5. Somente após aprovação formal, abrir decisão separada para o Runtime-BLOCK técnico mínimo.
+
+Resultado esperado: uma base modular segura, verificável e simples de operar, sem antecipar infraestrutura ou domínio comercial.
+
 O Runtime-BLOCK técnico mínimo da API deve partir da branch `official/pre-runtime-foundation-v1` e não deve fazer pull, merge, rebase ou force push sobre `origin/main`.
 
 ---

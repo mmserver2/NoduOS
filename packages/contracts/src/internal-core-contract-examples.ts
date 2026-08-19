@@ -48,9 +48,13 @@ export const validResourceReference: InternalCoreContractV1 = {
   ...base,
   contract_id: "NODUOS.CORE.RESOURCE_REFERENCE.v1",
   resource_reference_id: "resource_ref_01",
+  resource_type: "core_resource",
   public_resource_id: "resource_public_01",
   tenant_id: "tenant_01",
   scope: ["tenant:tenant_01"],
+  lifecycle_state: "active",
+  availability_state: "available",
+  allowed_actions: ["read"],
   no_domain_transfer: true,
   no_shared_database_access: true
 };
@@ -59,16 +63,24 @@ export const validAuthorizationDecision: InternalCoreContractV1 = {
   ...base,
   contract_id: "NODUOS.CORE.AUTHORIZATION_DECISION.v1",
   decision_id: "authz_01",
+  decision_version: "v1",
   tenant_id: "tenant_01",
   context_id: "context_01",
   actor_reference: actor,
   permission_code: "core.contract.validate",
   action_code: "internal_core_contract.validate",
+  scope: ["tenant:tenant_01"],
+  policy_result: "allow",
+  permission_result: "allow",
+  license_result: "allow",
+  feature_flag_result: "allow",
+  privacy_result: "allow",
   correlation_id: "corr_01",
   audit_reference: audit,
   issued_at: "2026-07-02T00:00:00Z",
   expires_at: "2026-07-02T00:10:00Z",
   decision: "allow",
+  reason_code: "AUTHORIZED",
   fail_closed: true,
   owner_module_must_execute: true
 };
@@ -93,7 +105,9 @@ export const validEventEnvelope: InternalCoreContractV1 = {
   source_module: "Core Platform",
   producer_module: "Core Platform",
   payload: { status: "validated" },
-  correlation_id: "corr_01"
+  correlation_id: "corr_01",
+  occurred_at: "2026-07-02T00:00:00Z",
+  published_at: "2026-07-02T00:00:01Z"
 };
 
 export const validSecretReference: InternalCoreContractV1 = {
@@ -101,6 +115,12 @@ export const validSecretReference: InternalCoreContractV1 = {
   contract_id: "NODUOS.CORE.SECRET_REFERENCE.v1",
   sensitivity_level: "Critical",
   secret_reference_id: "secret_ref_01",
+  secret_type: "api_credential",
+  secret_scope: ["core"],
+  access_policy_reference: "policy:secret-access",
+  rotation_policy_reference: "policy:secret-rotation",
+  revocation_policy_reference: "policy:secret-revocation",
+  audit_policy_reference: "policy:secret-audit",
   no_domain_transfer: true
 };
 
@@ -109,6 +129,17 @@ export const validEvidenceReference: InternalCoreContractV1 = {
   contract_id: "NODUOS.CORE.EVIDENCE_REFERENCE.v1",
   sensitivity_level: "Critical",
   evidence_reference_id: "evidence_ref_01",
+  evidence_type: "document",
+  evidence_scope: ["core"],
+  tenant_id: "tenant_01",
+  custody_reference: "custody:01",
+  chain_of_custody_reference: "chain:01",
+  retention_policy_reference: "policy:retention",
+  masking_policy_reference: "policy:masking",
+  access_policy_reference: "policy:evidence-access",
+  export_control_policy_reference: "policy:export-control",
+  integrity_reference: "sha256:example",
+  audit_reference: audit,
   no_domain_transfer: true
 };
 
@@ -120,6 +151,12 @@ export const validTenantContext: InternalCoreContractV1 = {
   context_id: "context_01",
   actor_reference: actor,
   membership_reference: "membership_01",
+  context_type: "tenant",
+  scope: ["tenant:tenant_01"],
+  active_role_references: ["role:member"],
+  active_permission_references: ["permission:read"],
+  selected_at: "2026-07-02T00:00:00Z",
+  correlation_id: "corr_01",
   does_not_authorize: true
 };
 
@@ -135,6 +172,13 @@ export const validAuditReference: InternalCoreContractV1 = {
   contract_id: "NODUOS.CORE.AUDIT_REFERENCE.v1",
   authorization_required: false,
   audit_reference_id: "audit_ref_01",
+  audit_type: "contract_validation",
+  actor_reference: actor,
+  tenant_id: "tenant_01",
+  action_code: "internal_core_contract.validate",
+  correlation_id: "corr_01",
+  occurred_at: "2026-07-02T00:00:00Z",
+  retention_policy_reference: "policy:audit-retention",
   immutable: true,
   does_not_authorize: true
 };
@@ -148,6 +192,8 @@ export const validErrorEnvelope: InternalCoreContractV1 = {
   error_code: "CONTRACT_VALIDATION_DENIED",
   message_safe: "Contract validation denied by policy.",
   correlation_id: "corr_01",
+  occurred_at: "2026-07-02T00:00:00Z",
+  prohibited_sensitive_leakage: ["raw_secret", "raw_evidence", "stack_trace"],
   retryable: false,
   fail_closed: true
 };
@@ -161,10 +207,18 @@ export const validIdempotencyCommand: IdempotencyCommandV1 = {
   ...base,
   contract_id: "NODUOS.CORE.IDEMPOTENCY_COMMAND.v1",
   idempotency_key: "idem_01",
+  command_name: "ValidateInternalCoreContract",
+  command_version: "v1",
+  tenant_id: "tenant_01",
+  actor_reference: actor,
   payload_fingerprint: "fingerprint_a",
+  correlation_id: "corr_01",
+  issued_at: "2026-07-02T00:00:00Z",
+  expires_at: "2026-07-02T00:10:00Z",
   replay_policy: "return_recorded_result",
   conflict_policy: "reject_different_payload",
-  does_not_authorize: true
+  does_not_authorize: true,
+  audit_reference: audit
 };
 
 export const replayIdempotencyCommand: IdempotencyCommandV1 = { ...validIdempotencyCommand };
@@ -181,4 +235,3 @@ export const internalCoreContractExamples = [
   validErrorEnvelope,
   validIdempotencyCommand
 ] as const;
-

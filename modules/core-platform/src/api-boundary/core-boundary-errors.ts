@@ -15,7 +15,9 @@ export function createCoreBoundaryError(
   };
 
   if (detailsMinimized && Object.keys(detailsMinimized).length > 0) {
-    error.details_minimized = detailsMinimized;
+    error.details_minimized = Object.fromEntries(
+      Object.entries(detailsMinimized).map(([key, value]) => [sanitizeSafeMessage(key), sanitizeSafeMessage(value)]),
+    );
   }
 
   return error;
@@ -32,20 +34,28 @@ export function sanitizeSafeMessage(message: string): string {
     "arquivo de ambiente",
   ];
 
-  let sanitized = message;
+  let sanitized = message.replace(/[\r\n\t]/g, " ");
   for (const fragment of forbiddenFragments) {
-    sanitized = sanitized.replaceAll(fragment, "[redacted]");
+    sanitized = sanitized.replaceAll(new RegExp(fragment, "gi"), "[redacted]");
   }
 
   return sanitized.slice(0, 240);
 }
 
 export function hasRawSecretMarker(value: unknown): boolean {
-  const serialized = JSON.stringify(value ?? {}).toLowerCase();
+  const serialized = safeSerialize(value);
   return serialized.includes("raw_secret_value") || serialized.includes("secret_value_plain") || serialized.includes("plain_credential");
 }
 
 export function hasRawEvidenceMarker(value: unknown): boolean {
-  const serialized = JSON.stringify(value ?? {}).toLowerCase();
+  const serialized = safeSerialize(value);
   return serialized.includes("raw_evidence_value") || serialized.includes("evidence_blob_plain") || serialized.includes("plain_evidence");
+}
+
+function safeSerialize(value: unknown): string {
+  try {
+    return JSON.stringify(value ?? {}, (_key, item: unknown) => typeof item === "bigint" ? item.toString() : item).toLowerCase();
+  } catch {
+    return "raw_secret_value raw_evidence_value";
+  }
 }

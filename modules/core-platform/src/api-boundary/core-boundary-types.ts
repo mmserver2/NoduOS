@@ -64,6 +64,9 @@ export interface CoreAuthorizationPayload {
   purpose?: string;
   sensitivity_level?: CoreBoundarySensitivityLevel;
   audit_reference?: string;
+  authorization_decision?: "allow" | "deny" | "conditional" | "expired";
+  policy_result?: "allow" | "deny";
+  permission_result?: "allow" | "deny";
 }
 
 export interface CoreTenantContextPayload {
@@ -83,7 +86,7 @@ export interface CoreResourceReferencePayload {
 export interface CoreEventEnvelopePayload {
   event_id?: string;
   event_name?: string;
-  event_type?: "fact" | "request_registered" | "state_changed" | "technical";
+  event_type?: "fact_occurred" | "request_registered" | "state_changed" | "technical";
   payload_minimized?: boolean;
   payload?: Record<string, unknown>;
 }

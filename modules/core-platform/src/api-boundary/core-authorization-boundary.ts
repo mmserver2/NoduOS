@@ -29,5 +29,13 @@ export function validateCoreAuthorizationBoundary(
     return denyCoreBoundaryRequest(request, "CORE_AUTH_AUDIT_REFERENCE_REQUIRED", "audit reference is required");
   }
 
+  if (request.payload.authorization_decision !== "allow") {
+    return denyCoreBoundaryRequest(request, "CORE_AUTH_DECISION_NOT_ALLOWED", "authorization decision must explicitly allow");
+  }
+
+  if (request.payload.policy_result !== "allow" || request.payload.permission_result !== "allow") {
+    return denyCoreBoundaryRequest(request, "CORE_AUTH_POLICY_DENIED", "policy and permission must explicitly allow");
+  }
+
   return createCoreBoundarySuccess(request, { decision: "allow" }, "allowed");
 }

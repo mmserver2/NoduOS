@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
-const root = '/opt/noduos/repo';
+const root = resolve(process.argv[2] ?? process.cwd());
 
 const fail = (message) => {
   console.error(`FAIL: ${message}`);

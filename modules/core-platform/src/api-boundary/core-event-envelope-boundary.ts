@@ -20,7 +20,11 @@ export function validateCoreEventEnvelopeBoundary(
     return denyCoreBoundaryRequest(request, "CORE_EVENT_NAME_REQUIRED", "event name is required");
   }
 
-  if (request.payload.event_type === "technical" && eventName.toLowerCase().includes("command")) {
+  if (!request.payload.event_type) {
+    return denyCoreBoundaryRequest(request, "CORE_EVENT_TYPE_REQUIRED", "event type is required");
+  }
+
+  if (/(command|execute|executar|imperative)/i.test(eventName)) {
     return denyCoreBoundaryRequest(request, "CORE_EVENT_COMMAND_REJECTED", "event envelope cannot carry command execution");
   }
 

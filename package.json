@@ -10,19 +10,20 @@
     "modules/*"
   ],
   "scripts": {
-    "check:structure": "bash infra/scripts/verify-foundation.sh",
-    "verify:foundation": "bash infra/scripts/verify-foundation.sh",
+    "check:structure": "bash infra/scripts/verify-foundation.sh .",
+    "verify:foundation": "bash infra/scripts/verify-foundation.sh .",
     "check:invariants": "node scripts/check-foundation-invariants.mjs",
     "typecheck": "tsc --noEmit",
-    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run check:core-api-boundary",
+    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run test:internal-core-contracts && npm run check:core-api-boundary && npm run test:core-api-boundary",
     "check:core-contracts": "node scripts/check-core-contracts.mjs",
     "check:core-security": "node scripts/check-core-security.mjs",
     "check:core-privacy": "node scripts/check-core-privacy.mjs",
     "check:core-invariants": "node scripts/check-core-invariants.mjs",
     "check:core": "npm run check:core-contracts && npm run check:core-security && npm run check:core-privacy && npm run check:core-invariants",
-    "test:core": "node scripts/check-core-tests.mjs",
+    "test:core": "tsx tests/core-platform/core-platform.structural.test.ts",
     "check:engineering-protocol": "node scripts/check-engineering-protocol.mjs",
     "check:internal-core-contracts": "node scripts/check-internal-core-contracts.mjs",
+    "test:internal-core-contracts": "tsx tests/contracts/internal-core-contracts.structural.test.ts",
     "check:core-api-boundary": "node scripts/check-core-api-boundary.mjs",
     "test:core-api-boundary": "tsx --test tests/core-platform/core-api-boundary.structural.test.ts"
   },
@@ -42,6 +43,7 @@
     "push": false
   },
   "devDependencies": {
+    "tsx": "4.20.5",
     "typescript": "^5.0.0"
   }
 }

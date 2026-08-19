@@ -2825,6 +2825,10 @@ Decisões aplicadas nesta atualização:
 
 Próxima DEC livre: DEC-199.
 
+## Diretriz executiva DEC-199
+
+O próximo marco obrigatório é o bloco pré-runtime de correção e testes reais. A execução deve ser reproduzível por `npm ci`, manter checkers portáveis, integrar os testes reais ao `check:all` e preservar as fronteiras fail-closed do Core. Nenhum Runtime-BLOCK pode ser iniciado por esta etapa.
+
 Próxima etapa recomendada: Matriz Técnica de Dados Sensíveis por Contrato.
 
 30.3 Atualização consolidada: Matriz Técnica de Permissões por Contrato
