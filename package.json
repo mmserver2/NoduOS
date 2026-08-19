@@ -14,7 +14,7 @@
     "verify:foundation": "bash infra/scripts/verify-foundation.sh .",
     "check:invariants": "node scripts/check-foundation-invariants.mjs",
     "typecheck": "tsc --noEmit",
-    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run test:internal-core-contracts && npm run check:core-api-boundary && npm run test:core-api-boundary",
+    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run test:internal-core-contracts && npm run check:core-api-boundary && npm run test:core-api-boundary && npm run test:web-shell && npm run build:web",
     "check:core-contracts": "node scripts/check-core-contracts.mjs",
     "check:core-security": "node scripts/check-core-security.mjs",
     "check:core-privacy": "node scripts/check-core-privacy.mjs",
@@ -25,7 +25,9 @@
     "check:internal-core-contracts": "node scripts/check-internal-core-contracts.mjs",
     "test:internal-core-contracts": "tsx tests/contracts/internal-core-contracts.structural.test.ts",
     "check:core-api-boundary": "node scripts/check-core-api-boundary.mjs",
-    "test:core-api-boundary": "tsx --test tests/core-platform/core-api-boundary.structural.test.ts"
+    "test:core-api-boundary": "tsx --test tests/core-platform/core-api-boundary.structural.test.ts",
+    "test:web-shell": "tsx tests/web/app-shell.structural.test.ts",
+    "build:web": "npm run build --workspace @noduos/web"
   },
   "engines": {
     "node": ">=22",

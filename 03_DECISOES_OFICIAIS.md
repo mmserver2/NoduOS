@@ -5689,6 +5689,48 @@ Próxima etapa autorizada: executar e auditar integralmente o bloco DEC-199.
 Runtime-BLOCK: não iniciado e não autorizado por esta decisão.
 ```
 
+---
+
+# DEC-200: Início executivo do software, App Shell e Golden Paths
+
+## Decisão
+
+O NoduOS encerra a sequência prolongada de preparação e inicia a execução objetiva do produto. Esta decisão cria o primeiro App Shell web funcional, páginas navegáveis e padrões visuais reutilizáveis, mantendo os contratos, a autorização fail-closed e as fronteiras modulares já aprovadas.
+
+As próximas entregas devem ser curtas e orientadas a software executável: interface, runtime, persistência, integração ponta a ponta e produção. Documentação nova somente será criada quando necessária para governança, operação ou auditoria.
+
+## Entrega desta decisão
+
+- aplicação web React + Vite compilável;
+- páginas Login, Visão Geral, Espaços, Pessoas, Dispositivos e Configurações;
+- navegação responsiva e acessível;
+- estados operacionais explícitos;
+- tokens visuais oficiais NoduOS;
+- registro tipado de rotas e módulos;
+- teste estrutural executável;
+- build de produção integrado ao `check:all`.
+
+## Sequência resumida até produção
+
+1. DEC-200: App Shell e páginas reais.
+2. DEC-201: runtime mínimo da API e sessão/autorização.
+3. DEC-202: persistência multi-tenant e migrations controladas.
+4. DEC-203: primeiro Golden Path ponta a ponta.
+5. DEC-204: observabilidade, backup, restore, segurança operacional e deploy.
+6. DEC-205: piloto controlado e promoção à produção.
+
+## Status
+
+Aprovada para execução.
+
+## Estado
+
+```text
+Última DEC consolidada: DEC-200.
+Próxima DEC livre: DEC-201.
+Foco: execução do software e avanço objetivo até produção.
+```
+
 
 ---
 
