@@ -1,14 +1,12 @@
 {
-  "name": "@noduos/app-api-shell",
-  "version": "0.0.0-structural",
+  "name": "@noduos/api",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
-  "main": "src/main.ts",
-  "noduos": {
-    "appType": "api-shell",
-    "startsServer": false,
-    "opensPort": false,
-    "functionalEndpoints": false,
-    "deploy": false
+  "scripts": {
+    "start": "node src/server.mjs"
+  },
+  "dependencies": {
+    "pg": "8.23.0"
   }
 }
