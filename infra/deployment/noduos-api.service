@@ -29,6 +29,7 @@ LockPersonality=true
 CapabilityBoundingSet=CAP_NET_ADMIN
 AmbientCapabilities=CAP_NET_ADMIN
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+ReadWritePaths=/opt/noduos/shared/secrets/device-credentials
 UMask=0027
 StandardOutput=journal
 StandardError=journal
