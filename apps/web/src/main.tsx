@@ -88,8 +88,9 @@ function Page({ route, session, notify }: { route: AppRoute; session: Session; n
     case "overview": return <Overview session={session}/>;
     case "spaces": return <EntityPage title="Espaços" endpoint="spaces" session={session} fields={[{ key: "name", label: "Nome do espaço" }]} columns={["name","status"]} canWrite={session.user.capabilities.includes("spaces.write")} notify={notify}/>;
     case "people": return <EntityPage title="Pessoas" endpoint="people" session={session} fields={[{ key: "name", label: "Nome" },{ key: "email", label: "E-mail", type: "email", optional: true }]} columns={["name","email","status"]} canWrite={session.user.capabilities.includes("people.write")} notify={notify}/>;
-    case "devices": return <EntityPage title="Dispositivos" endpoint="devices" session={session} fields={[{ key: "name", label: "Nome do dispositivo" },{ key: "kind", label: "Tipo", placeholder: "Câmera, controle de acesso…" }]} columns={["name","kind","status"]} canWrite={session.user.capabilities.includes("devices.write")} notify={notify}/>;
+    case "devices": return <EntityPage title={route.label} endpoint={`modules/${route.moduleId}/${route.resource}`} session={session} fields={route.fields || []} columns={route.columns || ["name","status"]} canWrite={session.user.capabilities.includes(`${route.moduleId}.write`)} notify={notify}/>;
     case "settings": return <Settings session={session} notify={notify}/>;
+    default: return <EntityPage title={route.label} endpoint={`modules/${route.moduleId}/${route.resource}`} session={session} fields={route.fields || []} columns={route.columns || ["name","status"]} canWrite={session.user.capabilities.includes(`${route.moduleId}.write`)} notify={notify}/>;
   }
 }
 
@@ -113,7 +114,7 @@ function EntityPage({ title, endpoint, session, fields, columns, canWrite, notif
   return <div className="content-grid">{canWrite && <form className="panel form-panel" onSubmit={(event) => void submit(event)}><h2>Novo registro</h2>{fields.map((field) => <label key={field.key}>{field.label}<input required={!field.optional} type={field.type || "text"} placeholder={field.placeholder} value={form[field.key] || ""} onChange={(e) => setForm({...form,[field.key]:e.target.value})}/></label>)}<button className="primary" disabled={saving}>{saving ? "Salvando…" : "Criar"}</button></form>}<section className="panel table-panel"><div className="panel-heading"><h2>{title}</h2><button className="secondary" onClick={() => void load()}>Atualizar</button></div>{error ? <State title="Falha na consulta" detail={error}/> : loading ? <State title="Carregando" detail="Buscando registros…" loading/> : items.length === 0 ? <State title="Nenhum registro" detail="Crie o primeiro registro para iniciar este fluxo."/> : <div className="table-wrap"><table><thead><tr>{columns.map((column) => <th key={column}>{labels[column] || column}</th>)}</tr></thead><tbody>{items.map((item) => <tr key={String(item.id)}>{columns.map((column) => <td key={column}>{item[column] || "—"}</td>)}</tr>)}</tbody></table></div>}</section></div>;
 }
 
-const labels: Record<string,string> = { name: "Nome", email: "E-mail", status: "Status", kind: "Tipo" };
+const labels: Record<string,string> = { name:"Nome",email:"E-mail",status:"Status",kind:"Tipo",unit:"Unidade",contact:"Contato",document:"Documento",destination:"Destino",holder:"Portador",space:"Área",scheduled_at:"Data e hora",carrier:"Transportadora",category:"Categoria",priority:"Prioridade",location:"Local",audience:"Público",created_at:"Criado em",amount:"Valor",due_date:"Vencimento",provider:"Provedor",channel:"Canal",service:"Serviço" };
 
 function Settings({ session, notify }: { session: Session; notify: (message: string) => void }) {
   const [organizationName, setOrganizationName] = useState(""); const [primaryColor, setPrimaryColor] = useState("#00A37A"); const [busy, setBusy] = useState(true); const canWrite = session.user.capabilities.includes("settings.write");

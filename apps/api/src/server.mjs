@@ -7,11 +7,13 @@ import { safeIdempotencyKey, safeUuid, token, tokenHash, verifyPassword } from "
 const startedAt = Date.now();
 const metrics = { requests: 0, errors: 0, loginsOk: 0, loginsDenied: 0 };
 const rateBuckets = new Map();
+const commercialModules = ["condo.residents","condo.visitors","condo.access","condo.reservations","condo.deliveries","condo.occurrences","condo.maintenance","condo.communication","condo.documents","condo.assemblies","condo.finance","condo.cameras","condo.devices","condo.notifications","condo.support","condo.partners"];
+const moduleCapabilities = (write) => commercialModules.flatMap((moduleId) => write ? [`${moduleId}.read`,`${moduleId}.write`] : [`${moduleId}.read`]);
 const roleCapabilities = Object.freeze({
-  owner: new Set(["overview.read", "spaces.read", "spaces.write", "people.read", "people.write", "devices.read", "devices.write", "settings.read", "settings.write", "audit.read"]),
-  admin: new Set(["overview.read", "spaces.read", "spaces.write", "people.read", "people.write", "devices.read", "devices.write", "settings.read", "settings.write", "audit.read"]),
-  operator: new Set(["overview.read", "spaces.read", "people.read", "people.write", "devices.read", "devices.write", "settings.read"]),
-  viewer: new Set(["overview.read", "spaces.read", "people.read", "devices.read", "settings.read"]),
+  owner: new Set(["overview.read", "spaces.read", "spaces.write", "people.read", "people.write", "devices.read", "devices.write", "settings.read", "settings.write", "audit.read", ...moduleCapabilities(true)]),
+  admin: new Set(["overview.read", "spaces.read", "spaces.write", "people.read", "people.write", "devices.read", "devices.write", "settings.read", "settings.write", "audit.read", ...moduleCapabilities(true)]),
+  operator: new Set(["overview.read", "spaces.read", "people.read", "people.write", "devices.read", "devices.write", "settings.read", ...moduleCapabilities(false)]),
+  viewer: new Set(["overview.read", "spaces.read", "people.read", "devices.read", "settings.read", ...moduleCapabilities(false)]),
 });
 
 function log(entry) {
@@ -272,6 +274,46 @@ const collections = {
   },
 };
 
+function safeModuleData(body) {
+  if (!body || Array.isArray(body) || typeof body !== "object") fail(400, "VALIDATION_ERROR", "dados inválidos");
+  const entries = Object.entries(body);
+  if (entries.length === 0 || entries.length > 32) fail(400, "VALIDATION_ERROR", "quantidade de campos inválida");
+  const data = {};
+  for (const [key, value] of entries) {
+    if (!/^[a-z][a-z0-9_]{0,39}$/.test(key)) fail(400, "VALIDATION_ERROR", "campo inválido");
+    if (value !== null && !["string","number","boolean"].includes(typeof value)) fail(400, "VALIDATION_ERROR", `${key} inválido`);
+    if (typeof value === "string" && value.trim().length > 1000) fail(400, "VALIDATION_ERROR", `${key} excede o limite`);
+    data[key] = typeof value === "string" ? value.trim() : value;
+  }
+  if (typeof data.name !== "string" || !data.name) fail(400, "VALIDATION_ERROR", "name é obrigatório");
+  return data;
+}
+
+async function moduleCollection(req, res, session, correlationId, moduleId, resource) {
+  if (!commercialModules.includes(moduleId) || !/^[a-z][a-z0-9-]{1,39}$/.test(resource)) fail(404, "MODULE_NOT_FOUND", "Módulo não encontrado");
+  requireCapability(session, `${moduleId}.read`);
+  const outcome = await withTenant(session, async (client) => {
+    const entitlement = await client.query("SELECT enabled FROM core.module_entitlements WHERE tenant_id=$1 AND context_id=$2 AND module_id=$3", [session.tenantId,session.contextId,moduleId]);
+    if (!entitlement.rows[0]?.enabled) fail(403, "MODULE_DISABLED", "Módulo não contratado para este contexto");
+    if (req.method === "GET") {
+      const rows = await client.query("SELECT id,status,data,created_at,updated_at FROM ops.module_records WHERE tenant_id=$1 AND context_id=$2 AND module_id=$3 AND resource=$4 ORDER BY created_at DESC LIMIT 300", [session.tenantId,session.contextId,moduleId,resource]);
+      return { status: 200, body: { items: rows.rows.map((row) => ({ id: row.id, status: row.status, created_at: row.created_at, updated_at: row.updated_at, ...row.data })) } };
+    }
+    if (req.method === "POST") {
+      requireCapability(session, `${moduleId}.write`);
+      const data = safeModuleData(await readJson(req));
+      return idempotent(client, req, session, `${moduleId}.${resource}.create`, async () => {
+        const id = randomUUID();
+        const created = await client.query("INSERT INTO ops.module_records(id,tenant_id,context_id,module_id,resource,status,data,created_by) VALUES($1,$2,$3,$4,$5,'active',$6::jsonb,$7) RETURNING id,status,data,created_at", [id,session.tenantId,session.contextId,moduleId,resource,JSON.stringify(data),session.user.id]);
+        await audit(client, session, "module.record.created", `${moduleId}:${resource}`, id, correlationId, { moduleId, resource });
+        const row = created.rows[0]; return { status: 201, body: { id: row.id, status: row.status, created_at: row.created_at, ...row.data } };
+      });
+    }
+    fail(405, "METHOD_NOT_ALLOWED", "Método não permitido");
+  });
+  send(res, outcome.status, outcome.body, correlationId, outcome.replayed ? { "idempotency-replayed": "true" } : {});
+}
+
 async function handlePrivate(req, res, url, correlationId) {
   const session = await authenticate(req);
   const key = routeKey(req.method, url.pathname);
@@ -296,6 +338,11 @@ async function handlePrivate(req, res, url, correlationId) {
   }
   if (collections[url.pathname]) {
     await collection(req, res, session, correlationId, collections[url.pathname]);
+    return;
+  }
+  const moduleMatch = url.pathname.match(/^\/v1\/modules\/([a-z0-9.]+)\/([a-z0-9-]+)$/);
+  if (moduleMatch) {
+    await moduleCollection(req, res, session, correlationId, moduleMatch[1], moduleMatch[2]);
     return;
   }
   if (key === "GET /v1/settings") {

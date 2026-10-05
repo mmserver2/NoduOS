@@ -1,0 +1,1 @@
+{"id":"condo.devices","route":"devices","owns":["devices","device-events"],"dependencies":[]}
