@@ -14,7 +14,7 @@
     "verify:foundation": "bash infra/scripts/verify-foundation.sh .",
     "check:invariants": "node scripts/check-foundation-invariants.mjs",
     "typecheck": "tsc --noEmit",
-    "check:all": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run test:internal-core-contracts && npm run check:core-api-boundary && npm run test:core-api-boundary && npm run test:web-shell && npm run build:web",
+    "check:all": "npm run typecheck && npm run check:core-contracts && npm run check:core-privacy && npm run test:core && npm run check:internal-core-contracts-runtime && npm run test:internal-core-contracts && npm run check:core-api-boundary && npm run test:core-api-boundary && npm run test:web-shell && npm run verify:runtime && npm run test:runtime && npm run build:web",
     "check:core-contracts": "node scripts/check-core-contracts.mjs",
     "check:core-security": "node scripts/check-core-security.mjs",
     "check:core-privacy": "node scripts/check-core-privacy.mjs",
@@ -27,7 +27,12 @@
     "check:core-api-boundary": "node scripts/check-core-api-boundary.mjs",
     "test:core-api-boundary": "tsx --test tests/core-platform/core-api-boundary.structural.test.ts",
     "test:web-shell": "tsx tests/web/app-shell.structural.test.ts",
-    "build:web": "npm run build --workspace @noduos/web"
+    "build:web": "npm run build --workspace @noduos/web",
+    "check:pre-runtime-legacy": "npm run verify:foundation && npm run check:invariants && npm run typecheck && npm run check:core && npm run test:core && npm run check:engineering-protocol && npm run check:internal-core-contracts && npm run test:internal-core-contracts && npm run check:core-api-boundary && npm run test:core-api-boundary && npm run test:web-shell && npm run build:web",
+    "check:internal-core-contracts-runtime": "node scripts/check-internal-core-contracts-runtime.mjs",
+    "verify:runtime": "node scripts/check-runtime-invariants.mjs",
+    "test:runtime": "node --test tests/runtime/*.test.mjs",
+    "audit:dependencies": "npm audit --audit-level=moderate"
   },
   "engines": {
     "node": ">=22",
