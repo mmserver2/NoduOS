@@ -1,0 +1,1 @@
+{"id":"condo.network","route":"network","owns":["wireguard-tunnels","mikrotik-profiles","network-discovery"],"dependencies":[]}

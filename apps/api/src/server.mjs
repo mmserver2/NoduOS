@@ -1,5 +1,7 @@
 import http from "node:http";
 import { randomUUID } from "node:crypto";
+import { execFile as execFileCallback } from "node:child_process";
+import { promisify } from "node:util";
 import { config } from "./config.mjs";
 import { closePool, query, withTenant } from "./db.mjs";
 import { safeIdempotencyKey, safeUuid, token, tokenHash, verifyPassword } from "./security.mjs";
@@ -7,7 +9,8 @@ import { safeIdempotencyKey, safeUuid, token, tokenHash, verifyPassword } from "
 const startedAt = Date.now();
 const metrics = { requests: 0, errors: 0, loginsOk: 0, loginsDenied: 0 };
 const rateBuckets = new Map();
-const commercialModules = ["condo.residents","condo.visitors","condo.access","condo.reservations","condo.deliveries","condo.occurrences","condo.maintenance","condo.communication","condo.documents","condo.assemblies","condo.finance","condo.cameras","condo.devices","condo.notifications","condo.support","condo.partners"];
+const execFile = promisify(execFileCallback);
+const commercialModules = ["condo.network","condo.residents","condo.visitors","condo.access","condo.reservations","condo.deliveries","condo.occurrences","condo.maintenance","condo.communication","condo.documents","condo.assemblies","condo.finance","condo.cameras","condo.devices","condo.notifications","condo.support","condo.partners"];
 const moduleCapabilities = (write) => commercialModules.flatMap((moduleId) => write ? [`${moduleId}.read`,`${moduleId}.write`] : [`${moduleId}.read`]);
 const roleCapabilities = Object.freeze({
   owner: new Set(["overview.read", "spaces.read", "spaces.write", "people.read", "people.write", "devices.read", "devices.write", "settings.read", "settings.write", "audit.read", ...moduleCapabilities(true)]),
@@ -314,6 +317,65 @@ async function moduleCollection(req, res, session, correlationId, moduleId, reso
   send(res, outcome.status, outcome.body, correlationId, outcome.replayed ? { "idempotency-replayed": "true" } : {});
 }
 
+function ipv4(value) {
+  if (typeof value !== "string") return false;
+  const parts=value.split("."); return parts.length===4 && parts.every((part)=>/^\d{1,3}$/.test(part)&&Number(part)>=0&&Number(part)<=255);
+}
+function cidr(value) {
+  if (typeof value !== "string" || !value.includes("/")) return false;
+  const [address,prefix]=value.split("/"); return ipv4(address) && /^\d{1,2}$/.test(prefix) && Number(prefix)>=8 && Number(prefix)<=32;
+}
+function wireguardProfile() {
+  return {
+    interfaceName: process.env.WIREGUARD_SERVER_INTERFACE_NAME || "wg0",
+    endpointHost: process.env.WIREGUARD_SERVER_ENDPOINT_HOST || "",
+    endpointPort: Number(process.env.WIREGUARD_SERVER_ENDPOINT_PORT || 51820),
+    serverAddress: process.env.WIREGUARD_SERVER_TUNNEL_ADDRESS || "10.66.0.1/24",
+    serverPublicKey: process.env.WIREGUARD_SERVER_PUBLIC_KEY || "",
+    clientPool: process.env.WIREGUARD_CLIENT_POOL || "10.66.0.0/24",
+  };
+}
+function mikrotikScript(tunnel, profile) {
+  const safeName=String(tunnel.name).replace(/["\\\r\n]/g,""); const iface=String(tunnel.interface_name).replace(/[^A-Za-z0-9_.-]/g,"");
+  const serverHost=profile.serverAddress.split("/")[0];
+  return [
+    `:if ([:len [/interface/wireguard find where name="${iface}"]] = 0) do={ /interface/wireguard add name="${iface}" listen-port=51820 mtu=1420 comment="NoduOS - ${safeName}" }`,
+    `/ip/address add address=${tunnel.client_tunnel_address} interface="${iface}" comment="NoduOS WireGuard"`,
+    `/interface/wireguard/peers add interface="${iface}" public-key="${profile.serverPublicKey}" endpoint-address=${profile.endpointHost} endpoint-port=${profile.endpointPort} allowed-address=${serverHost}/32 persistent-keepalive=25s comment="NoduOS Server"`,
+    `/interface/wireguard print detail where name="${iface}"`,
+    `/ping ${serverHost} count=5 src-address=${tunnel.client_tunnel_address.split("/")[0]}`,
+  ].join("\n");
+}
+async function wg(args) { return execFile("/usr/bin/wg",args,{timeout:5000,maxBuffer:1024*1024}); }
+async function ip(args) { return execFile("/usr/sbin/ip",args,{timeout:5000,maxBuffer:1024*1024}); }
+function peerRuntime(dump, publicKey) {
+  const now=Math.floor(Date.now()/1000); for(const line of dump.trim().split("\n").slice(1)){const c=line.split("\t"); if(c[0]===publicKey){const handshake=Number(c[4]||0); return {peerFound:true,latestHandshakeAt:handshake?new Date(handshake*1000).toISOString():null,handshakeAgeSeconds:handshake?now-handshake:null,rxBytes:Number(c[5]||0),txBytes:Number(c[6]||0),connected:handshake>0&&now-handshake<180};}} return {peerFound:false,latestHandshakeAt:null,handshakeAgeSeconds:null,rxBytes:0,txBytes:0,connected:false};
+}
+async function networkWizard(req,res,url,session,correlationId) {
+  requireCapability(session,"condo.network.read"); const profile=wireguardProfile();
+  if(url.pathname==="/v1/network/profile"&&req.method==="GET"){send(res,200,{...profile,ready:Boolean(profile.endpointHost&&profile.serverPublicKey)},correlationId);return true;}
+  if(url.pathname==="/v1/network/tunnels"&&req.method==="GET"){
+    const result=await withTenant(session,(client)=>client.query("SELECT id,name,interface_name,client_tunnel_address,remote_subnet,router_ip,peer_public_key,status,last_handshake_at,last_error,created_at FROM ops.network_tunnels WHERE tenant_id=$1 AND context_id=$2 ORDER BY created_at DESC",[session.tenantId,session.contextId]));
+    send(res,200,{items:result.rows.map((row)=>({...row,mikrotikScript:mikrotikScript(row,profile)}))},correlationId);return true;
+  }
+  if(url.pathname==="/v1/network/tunnels"&&req.method==="POST"){
+    requireCapability(session,"condo.network.write"); const body=await readJson(req); const name=text(body.name,"name",120); const remoteSubnet=text(body.remoteSubnet,"remoteSubnet",32); const routerIp=text(body.routerIp,"routerIp",15); const interfaceName=text(body.interfaceName||"wg-noduos","interfaceName",32);
+    if(!cidr(remoteSubnet)||!ipv4(routerIp)||!/^wg-[A-Za-z0-9_.-]{1,28}$/.test(interfaceName)) fail(400,"VALIDATION_ERROR","Dados de rede inválidos");
+    const created=await withTenant(session,async(client)=>idempotent(client,req,session,"condo.network.tunnel.create",async()=>{const used=await client.query("SELECT client_tunnel_address FROM ops.network_tunnels"); const taken=new Set(used.rows.map((row)=>row.client_tunnel_address)); let address=""; for(let i=2;i<255;i++){const candidate=`10.66.0.${i}/32`;if(!taken.has(candidate)){address=candidate;break;}} if(!address) fail(409,"POOL_EXHAUSTED","Pool WireGuard esgotado"); const id=randomUUID(); const result=await client.query("INSERT INTO ops.network_tunnels(id,tenant_id,context_id,name,interface_name,client_tunnel_address,remote_subnet,router_ip,status,created_by) VALUES($1,$2,$3,$4,$5,$6,$7,$8,'prepared',$9) RETURNING *",[id,session.tenantId,session.contextId,name,interfaceName,address,remoteSubnet,routerIp,session.user.id]); await audit(client,session,"network.tunnel.created","WireGuardTunnel",id,correlationId,{remoteSubnet}); const row=result.rows[0]; return {status:201,body:{...row,mikrotikScript:mikrotikScript(row,profile)}};})); send(res,created.status,created.body,correlationId);return true;
+  }
+  const match=url.pathname.match(/^\/v1\/network\/tunnels\/([0-9a-f-]{36})\/(activate|status)$/i); if(!match)return false;
+  const [_,id,action]=match;
+  const tunnelResult=await withTenant(session,(client)=>client.query("SELECT * FROM ops.network_tunnels WHERE id=$1 AND tenant_id=$2 AND context_id=$3",[id,session.tenantId,session.contextId])); const tunnel=tunnelResult.rows[0]; if(!tunnel)fail(404,"NOT_FOUND","Túnel não encontrado");
+  if(action==="activate"&&req.method==="POST"){
+    requireCapability(session,"condo.network.write"); const body=await readJson(req); const publicKey=text(body.publicKey,"publicKey",64); if(!/^[A-Za-z0-9+/]{43}=$/.test(publicKey))fail(400,"VALIDATION_ERROR","Chave pública WireGuard inválida");
+    try{await wg(["set",profile.interfaceName,"peer",publicKey,"allowed-ips",`${tunnel.client_tunnel_address},${tunnel.remote_subnet}`,"persistent-keepalive","25"]);await ip(["route","replace",tunnel.remote_subnet,"dev",profile.interfaceName]);const runtime=peerRuntime((await wg(["show",profile.interfaceName,"dump"])).stdout,publicKey);await withTenant(session,(client)=>client.query("UPDATE ops.network_tunnels SET peer_public_key=$1,status='active',last_error=NULL,updated_at=now() WHERE id=$2",[publicKey,id]));send(res,200,{status:"active",runtime},correlationId);}catch(error){await withTenant(session,(client)=>client.query("UPDATE ops.network_tunnels SET status='error',last_error=$1,updated_at=now() WHERE id=$2",[String(error.message).slice(0,500),id]));fail(502,"WIREGUARD_SYNC_FAILED","Não foi possível sincronizar o peer no servidor");}return true;
+  }
+  if(action==="status"&&req.method==="GET"){
+    const runtime=tunnel.peer_public_key?peerRuntime((await wg(["show",profile.interfaceName,"dump"])).stdout,tunnel.peer_public_key):peerRuntime("",""); if(runtime.latestHandshakeAt)await withTenant(session,(client)=>client.query("UPDATE ops.network_tunnels SET last_handshake_at=$1,status=$2,updated_at=now() WHERE id=$3",[runtime.latestHandshakeAt,runtime.connected?"connected":"active",id]));send(res,200,{...tunnel,runtime},correlationId);return true;
+  }
+  fail(405,"METHOD_NOT_ALLOWED","Método não permitido");
+}
+
 async function handlePrivate(req, res, url, correlationId) {
   const session = await authenticate(req);
   const key = routeKey(req.method, url.pathname);
@@ -340,6 +402,7 @@ async function handlePrivate(req, res, url, correlationId) {
     await collection(req, res, session, correlationId, collections[url.pathname]);
     return;
   }
+  if (url.pathname.startsWith("/v1/network/") && await networkWizard(req,res,url,session,correlationId)) return;
   const moduleMatch = url.pathname.match(/^\/v1\/modules\/([a-z0-9.]+)\/([a-z0-9-]+)$/);
   if (moduleMatch) {
     await moduleCollection(req, res, session, correlationId, moduleMatch[1], moduleMatch[2]);

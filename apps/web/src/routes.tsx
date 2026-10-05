@@ -8,6 +8,7 @@ export const appRoutes: readonly AppRoute[] = [
   { id: "overview", label: "Visão geral", icon: "◉", description: "Resumo operacional do ambiente", capability: "overview.read", moduleId: "core", core: true },
   { id: "spaces", label: "Estrutura", icon: "⌂", description: "Blocos, unidades e áreas comuns", capability: "spaces.read", moduleId: "core", core: true },
   { id: "people", label: "Pessoas", icon: "◎", description: "Identidades e vínculos autorizados", capability: "people.read", moduleId: "core", core: true },
+  { id: "network", label: "Rede e MikroTik", icon: "⌁", description: "Wizard WireGuard e integração da rede remota", capability: "condo.network.read", moduleId: "condo.network" },
   moduleRoute("condo.residents", "residents", "Moradores", "♙", "Moradores, dependentes e vínculos com unidades", [field("name","Nome"),field("unit","Unidade"),field("contact","Contato",true)], ["name","unit","contact","status"]),
   moduleRoute("condo.visitors", "visitors", "Visitantes", "↪", "Visitantes, autorizações e entradas", [field("name","Visitante"),field("document","Documento",true),field("destination","Destino")], ["name","document","destination","status"]),
   moduleRoute("condo.access", "access-control", "Controle de acesso", "⌁", "Credenciais, permissões e eventos", [field("name","Credencial"),field("kind","Tipo"),field("holder","Portador")], ["name","kind","holder","status"]),
