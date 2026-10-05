@@ -2359,3 +2359,11 @@ Estado após DEC-198:
 Próxima DEC livre: DEC-199.
 Próxima etapa recomendada: Runtime-BLOCK técnico mínimo da API usando official/pre-runtime-foundation-v1.
 ```
+
+---
+
+# DEC-201 a DEC-205 — Runtime, Golden Path e piloto LAN
+
+A execução aprovada conecta API, autenticação/sessão, PostgreSQL multi-tenant, páginas operacionais, deploy reversível, observabilidade, backup/restore e piloto LAN. Produção pública ampla permanece condicionada a domínio, TLS público, backup externo e piloto sem bloqueador crítico.
+
+Estado: DEC-201, DEC-202, DEC-203, DEC-204 e DEC-205 concluídas. Próxima DEC livre: DEC-206.
